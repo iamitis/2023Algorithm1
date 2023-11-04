@@ -51,7 +51,7 @@ public class Percolation {
     private void connectTopOrBottom(int row, int col) {
         if (row == 1)
             ufArray.union(getUFArrayIndex(row, col), 0);
-        else if (row == sizeOfGrid)
+        if (row == sizeOfGrid)
             ufArray.union(getUFArrayIndex(row, col), sizeOfGrid * sizeOfGrid + 1);
     }
 
