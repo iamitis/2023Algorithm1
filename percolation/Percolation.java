@@ -21,7 +21,7 @@ public class Percolation {
         sites = new boolean[n + 2][n + 2];
         sizeOfGrid = n;
         countOfOpenSites = 0;
-        ufArray = new WeightedQuickUnionUF(n * n + 1);
+        ufArray = new WeightedQuickUnionUF(n * n + 2);  // 多两个留给 top 和 bottom 以便后续判断上下连通
     }
 
     // opens the site (row, col) if it is not open already
@@ -31,9 +31,8 @@ public class Percolation {
             return;
         sites[row][col] = true;
         countOfOpenSites += 1;
-        // 若此 site 在第一排，将其与 ufArray[0] 连通
-        if (row == 1)
-            connectTop(row, col);
+        // 若此 site 在第一排或最后一排，将其与 ufArray[0] 或 ufArray[end] 连通
+        connectTopOrBottom(row, col);
         // 若相邻的 site isOpen，将它们连通
         connectNeighbour(row, col);
     }
@@ -49,8 +48,11 @@ public class Percolation {
             ufArray.union(getUFArrayIndex(row, col), getUFArrayIndex(row, col + 1));
     }
 
-    private void connectTop(int row, int col) {
-        ufArray.union(getUFArrayIndex(row, col), 0);
+    private void connectTopOrBottom(int row, int col) {
+        if (row == 1)
+            ufArray.union(getUFArrayIndex(row, col), 0);
+        else if (row == sizeOfGrid)
+            ufArray.union(getUFArrayIndex(row, col), sizeOfGrid * sizeOfGrid + 1);
     }
 
     // 获取二维 grid 中的 site 在一维 ufArray 中对应的 index
@@ -85,11 +87,6 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        for (int i = 1; i <= sizeOfGrid; ++i) {
-            if (isFull(sizeOfGrid, i)) {
-                return true;
-            }
-        }
-        return false;
+        return ufArray.find(0) == ufArray.find(sizeOfGrid * sizeOfGrid + 1);
     }
 }
