@@ -12,6 +12,9 @@ public class Percolation {
     private int sizeOfGrid;
     private int countOfOpenSites;
     private WeightedQuickUnionUF ufArray;
+            // 不能判断 isFull，例：某 site1 未与 top 连通但与 bottom 连通，而另一 site2 同时与 top 和 bottom 连通，
+    // 则错误判断 site1 isFull. 但是懒得改了（）
+    private WeightedQuickUnionUF ufArrayWithOutbottm; // 用于判断 isFull
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
