@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * @author iamitis
+ */
+
 public class Board {
 
     private int[][] puzzle;
@@ -20,6 +24,7 @@ public class Board {
     public Board(int[][] tiles) {
         dimension = tiles[0].length;
         puzzle = new int[dimension][dimension];
+        // 没搞懂java复制二维数组的规则……
         for (int i = 0; i < dimension; ++i) {
             for (int j = 0; j < dimension; ++j) {
                 puzzle[i][j] = tiles[i][j];
